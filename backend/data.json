@@ -1,0 +1,244 @@
+{
+  "preguntes": [
+    {
+      "id": 1,
+      "pregunta": "Quina és la velocitat màxima permesa per a un turisme en una autopista o autovia dins d'Espanya?",
+      "respostes": [
+        "100 km/h",
+        "120 km/h",
+        "130 km/h",
+        "110 km/h"
+      ],
+      "resposta_correcta": 1,
+      "imatge": "./img/circulacio.jpg"
+    },
+    {
+      "id": 2,
+      "pregunta": "Davant d'un senyal d'STOP, què està obligat a fer el conductor?",
+      "respostes": [
+        "Reduir la velocitat i cedir el pas si s'apropa un altre vehicle",
+        "Aturar completament el vehicle sempre abans de la línia de detenció",
+        "Aturar-se només si hi ha vianants creuant",
+        "Accelerar si la via transversal està lliure"
+      ],
+      "resposta_correcta": 1,
+      "imatge": "./img/stop.jpg"
+    },
+    {
+      "id": 3,
+      "pregunta": "Quina és la taxa màxima d'alcohol en aire expirat permesa per a un conductor novell (menys de 2 anys de carnet)?",
+      "respostes": [
+        "0,25 mg/l",
+        "0,15 mg/l",
+        "0,05 mg/l",
+        "0,50 mg/l"
+      ],
+      "resposta_correcta": 1,
+      "imatge": "./img/alcohol.jpg"
+    },
+    {
+      "id": 4,
+      "pregunta": "Com a norma general en una intersecció sense senyalitzar, qui té la prioritat de pas?",
+      "respostes": [
+        "El vehicle que s'aproxima per l'esquerra",
+        "El vehicle de major mida o tonatge",
+        "El vehicle que s'aproxima per la dreta",
+        "El vehicle que circula a major velocitat"
+      ],
+      "resposta_correcta": 2,
+      "imatge": "./img/inteseccio.jpg"
+    },
+    {
+      "id": 5,
+      "pregunta": "És obligatori l'ús del cinturó de seguretat en els seients posteriors d'un turisme?",
+      "respostes": [
+        "Sí, tant en vies urbanes com en interurbanes",
+        "Només en autopistes i autovies",
+        "Només si viatgen menors d'edat",
+        "No, només és obligatori per al conductor i copilot"
+      ],
+      "resposta_correcta": 0,
+      "imatge": "./img/cinturo.jpg"
+    },
+    {
+      "id": 6,
+      "pregunta": "Quina separació lateral mínima ha de deixar un turisme en avançar un ciclista fora de poblat?",
+      "respostes": [
+        "1 metre",
+        "1,5 metres",
+        "2 metres",
+        "0,5 metres"
+      ],
+      "resposta_correcta": 1,
+      "imatge": "./img/ciclista.jpg"
+    },
+    {
+      "id": 7,
+      "pregunta": "Quina és la velocitat màxima genèrica en carrers d'un sol carril per sentit de circulació en zona urbana?",
+      "respostes": [
+        "50 km/h",
+        "40 km/h",
+        "30 km/h",
+        "20 km/h"
+      ],
+      "resposta_correcta": 2,
+      "imatge": "./img/circulacio.jpg"
+    },
+    {
+      "id": 8,
+      "pregunta": "En cas de boira espessa o pluja molt intensa, quins llums antiboira és obligatori encendre?",
+      "respostes": [
+        "Els antiboira davanters només",
+        "Els antiboira posteriors",
+        "Els llums de carretera (llargues)",
+        "Cap, n'hi ha prou amb els llums de posició"
+      ],
+      "resposta_correcta": 1,
+      "imatge": "./img/antiboira.webp"
+    },
+    {
+      "id": 9,
+      "pregunta": "Quan està permès avançar per la dreta en una autopista?",
+      "respostes": [
+        "Sempre que el carril de l'esquerra vagi lent",
+        "Com a norma general, està totalment prohibit",
+        "Quan el vehicle de davant ho indiqui amb l'intermitent dret",
+        "Sempre que no se superi el límit de velocitat"
+      ],
+      "resposta_correcta": 1,
+      "imatge": "./img/autoviajpg.jpg"
+    },
+    {
+      "id": 10,
+      "pregunta": "Què indica una línia blanca contínua a la calçada?",
+      "respostes": [
+        "Que es pot travessar només per avançar",
+        "Que cap vehicle pot travessar-la ni circular per sobre d'ella",
+        "Que el carril està reservat exclusivament a autobusos",
+        "Que s'aproxima una zona d'estacionament"
+      ],
+      "resposta_correcta": 1,
+      "imatge": "./img/linea-continua.jpg"
+    },
+    {
+      "id": 11,
+      "pregunta": "Què indica un senyal triangular amb vora vermella i fons blanc?",
+      "respostes": [
+        "Una obligació",
+        "Una prohibició",
+        "Un perill",
+        "Una indicació general"
+      ],
+      "resposta_correcta": 2,
+      "imatge": "./img/senyal-perill.jpg"
+    },
+    {
+      "id": 12,
+      "pregunta": "Està permès utilitzar el telèfon mòbil subjectant-lo amb la mà mentre es condueix?",
+      "respostes": [
+        "Només quan el vehicle estigui aturat en un semàfor en vermell",
+        "No, està totalment prohibit i comporta pèrdua de punts",
+        "Sí, si s'utilitza a velocitats inferiors a 30 km/h",
+        "Només per enviar missatges curts d'àudio"
+      ],
+      "resposta_correcta": 1,
+      "imatge": "./img/telefon-mobil.jpg"
+    },
+    {
+      "id": 13,
+      "pregunta": "Com a norma general, quina és la velocitat mínima en una autopista per a un turisme?",
+      "respostes": [
+        "50 km/h",
+        "60 km/h",
+        "70 km/h",
+        "80 km/h"
+      ],
+      "resposta_correcta": 1,
+      "imatge": "./img/velocitat-minima.jpg"
+    },
+    {
+      "id": 14,
+      "pregunta": "En una rotonda o glorieta, qui té la prioritat de pas com a norma general?",
+      "respostes": [
+        "Els vehicles que pretenen accedir-hi des de la dreta",
+        "Els vehicles que ja circulen per l'interior de la glorieta",
+        "Els vehicles més pesants o de transport públic",
+        "El vehicle que s'incorpori a major velocitat"
+      ],
+      "resposta_correcta": 1,
+      "imatge": "./img/rotonda.jpg"
+    },
+    {
+      "id": 15,
+      "pregunta": "A quina distància mínima s'ha de col·locar el triangle de pre-senyalització de perill en cas d'avaria en una via de doble sentit?",
+      "respostes": [
+        "A 30 metres del vehicle",
+        "A 50 metres del vehicle i visible des de 100 metres",
+        "A 15 metres del vehicle",
+        "A 100 metres del vehicle"
+      ],
+      "resposta_correcta": 1,
+      "imatge": "./img/triangle-avaria.jpg"
+    },
+    {
+      "id": 16,
+      "pregunta": "Fins a quina alçada és obligatori que els menors utilitzin un sistema de retenció infantil (cadireta)?",
+      "respostes": [
+        "Fins als 120 cm",
+        "Fins als 135 cm",
+        "Fins als 150 cm",
+        "Fins als 110 cm"
+      ],
+      "resposta_correcta": 1,
+      "imatge": "./img/retencio-infantil.jpg"
+    },
+    {
+      "id": 17,
+      "pregunta": "Què s'ha de fer en cas de patir hidroplanatge (aquaplaning)?",
+      "respostes": [
+        "Frenar bruscament a fons per immobilitzar el vehicle",
+        "Afluixar suaument l'accelerador i subjectar fermament el volant sense fer girs bruscos",
+        "Accelerar per recuperar la tracció de les rodes",
+        "Accionar ràpidament el fre d'estacionament o de mà"
+      ],
+      "resposta_correcta": 1,
+      "imatge": "./img/aquaplaning.jpg"
+    },
+    {
+      "id": 18,
+      "pregunta": "Amb quin tipus de llum s'ha de circular per l'interior d'un túnel prou il·luminat?",
+      "respostes": [
+        "Només amb els llums de posició",
+        "Amb l'enllumenat de posició i el de curt abast (creuament)",
+        "Amb els llums de llarg abast (carretera)",
+        "No és necessari encendre cap llum si està il·luminat"
+      ],
+      "resposta_correcta": 1,
+      "imatge": "./img/tunel.jpg"
+    },
+    {
+      "id": 19,
+      "pregunta": "Està permès fer marxa enrere en una autopista o autovia si s'ha passat la sortida?",
+      "respostes": [
+        "Sí, si no s'obstaculitza la circulació d'altres vehicles",
+        "Sí, sempre que no se superin els 15 metres",
+        "No, està totalment prohibit fer marxa enrere",
+        "Només per la zona del voral amb els llums d'emergència encesos"
+      ],
+      "resposta_correcta": 2,
+      "imatge": "./img/marxa-enrere.jpg"
+    },
+    {
+      "id": 20,
+      "pregunta": "Cada quants anys ha de passar la ITV un turisme particular nou a partir de la seva primera matriculació?",
+      "respostes": [
+        "Cada any des del primer any",
+        "Als 2 anys per primer cop",
+        "Als 4 anys per primer cop",
+        "Als 5 anys per primer cop"
+      ],
+      "resposta_correcta": 2,
+      "imatge": "./img/itv.jpg"
+    }
+  ]
+}
