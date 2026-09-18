@@ -8,11 +8,16 @@ let estatDeLaPartida = {
   }))
 };
 
+const botoEsborrar = document.getElementById("boto-esborrar");
 const userForm = document.getElementById('user-form');
 const sessioPartida = document.getElementById("quiz-container");
 const userNameText = document.getElementById("userNameText");
 const partidaDiv = document.getElementById("partida");
 
+botoEsborrar.addEventListener('click', function () {
+  localStorage.removeItem('user');
+  displayUserName();
+});         
 
 userForm.addEventListener('submit', function (event) {
   event.preventDefault();
