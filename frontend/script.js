@@ -1,6 +1,7 @@
 let preguntes;
 
 let estatDeLaPartida = {
+  sessionId: null,
   contadorPreguntes: 0,
   respostesUsuari: Array.from({ length: 10 }, () => ({
     id_pregunta: null,
@@ -17,7 +18,7 @@ const partidaDiv = document.getElementById("partida");
 botoEsborrar.addEventListener('click', function () {
   localStorage.removeItem('user');
   displayUserName();
-});         
+});          
 
 userForm.addEventListener('submit', function (event) {
   event.preventDefault();
@@ -63,7 +64,9 @@ partidaDiv.addEventListener("click", (event) => {
 fetch('http://localhost:3000/api/preguntes')
   .then(res => res.json())
   .then(data => {
-    preguntes = data;
+    estatDeLaPartida.sessionId = data.sessionId; 
+    preguntes = data.questions; 
+    
     renderitzarPregunta(0);
     renderitzarMarcador();
   })
@@ -88,7 +91,6 @@ function renderitzarPregunta(index) {
 
   partidaDiv.innerHTML = contingut;
 }
-
 
 function clickBoto(textResposta) { 
   const currentIdx = estatDeLaPartida.contadorPreguntes;
