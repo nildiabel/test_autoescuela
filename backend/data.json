@@ -130,7 +130,7 @@
         "Una indicació general"
       ],
       "resposta_correcta": 2,
-      "imatge": "./img/senyal-perill.jpg"
+      "imatge": "./img/senyal-perill.svg"
     },
     {
       "id": 12,
@@ -190,7 +190,7 @@
         "Fins als 110 cm"
       ],
       "resposta_correcta": 1,
-      "imatge": "./img/retencio-infantil.jpg"
+      "imatge": "./img/retencio-infantil.png"
     },
     {
       "id": 17,
