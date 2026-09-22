@@ -61,7 +61,7 @@ partidaDiv.addEventListener("click", (event) => {
   }
 });
 
-fetch('http://localhost:3000/api/preguntes')
+fetch('./api/preguntes')
   .then(res => res.json())
   .then(data => {
     estatDeLaPartida.sessionId = data.sessionId; 

@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 const app = express();
-const port = 3000;
+const port = Number(process.argv[2]) || 3000;
 const cors = require('cors');
 
 const dades = require('./data.json');
