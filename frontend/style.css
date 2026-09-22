@@ -1,0 +1,183 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+
+body {
+  background-color: #f0f3f6;
+  background-image: 
+    radial-gradient(#d3dce6 1px, transparent 1px),
+    radial-gradient(#d3dce6 1px, #f0f3f6 1px);
+  background-size: 20px 20px;
+  background-position: 0 0, 10px 10px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  color: #2c3e50;
+}
+
+.hidden {
+  display: none !important;
+}
+
+#user-form,
+#quiz-container {
+  width: 100%;
+  background: #ffffff;
+  padding: 32px 40px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(16, 42, 67, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05);
+  border-top: 6px solid #1a5276;
+}
+
+#user-form {
+  position: relative;
+}
+
+#user-form::before {
+  content: "🚗 Autoescola Diaz · Accés a l'Aula Virtual";
+  display: block;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #1a5276;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #eef2f6;
+}
+
+#user-form label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #486581;
+  margin-bottom: 6px;
+}
+
+#user-form input[type="text"],
+#user-form input[type="email"] {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 1rem;
+  color: #102a43;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#user-form input:focus {
+  border-color: #2980b9;
+  box-shadow: 0 0 0 3px rgba(41, 128, 185, 0.15);
+}
+
+/* =========================================
+   Panell de Test / Quiz
+   ========================================= */
+#userNameText {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #102a43;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #eef2f6;
+  margin-bottom: 16px;
+}
+
+#marcador {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-left: 4px solid #f39c12; /* Groc vial */
+  padding: 12px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  color: #334e68;
+  margin-bottom: 24px;
+}
+
+#partida {
+  margin-bottom: 24px;
+}
+
+#partida .pregunta,
+#partida h3 {
+  font-size: 1.15rem;
+  line-height: 1.5;
+  color: #102a43;
+  margin-bottom: 16px;
+}
+
+#partida .opcio,
+#partida label {
+  display: block;
+  background: #fdfdfd;
+  border: 1.5px solid #dbe2e8;
+  padding: 12px 16px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+}
+
+#partida .opcio:hover,
+#partida label:hover {
+  background: #f0f7fd;
+  border-color: #3b82f6;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 12px 20px;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+button:active {
+  transform: translateY(1px);
+}
+
+#user-form button[type="submit"] {
+  width: 100%;
+  background-color: #1a5276;
+  color: #ffffff;
+  padding: 14px;
+  margin-top: 8px;
+  letter-spacing: 0.3px;
+}
+
+#user-form button[type="submit"]:hover {
+  background-color: #154360;
+}
+
+#boto-enviar {
+  background-color: #27ae60;
+  color: #ffffff;
+  margin-right: 8px;
+}
+
+#boto-enviar:hover {
+  background-color: #219150;
+}
+
+#boto-esborrar {
+  background-color: transparent;
+  color: #627d98;
+  border: 1px solid #cbd5e1;
+}
+
+#boto-esborrar:hover {
+  background-color: #f8fafc;
+  color: #d9381e;
+  border-color: #fca5a5;
+}
