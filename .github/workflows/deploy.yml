@@ -1,6 +1,5 @@
 name: Deploy to Server
 
-# Se ejecuta cuando hay un push o merge a la rama "main"
 on:
   push:
     branches:
@@ -11,29 +10,41 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Instalar dependencias y ejecutar tests
+        run: |
+          npm install
+          npm test
+        working-directory: ./backend
+
       - name: Ejecutar comandos SSH en el servidor
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
-          # Script que se ejecutará directamente en la terminal de tu servidor
           script: |
-            # 1. Detener la sesión de screen anterior si existe (evita errores si no existe con || true)
+            # 1. Detener la sesión de screen anterior si existe
             screen -X -S test-autoescuela quit || true
             
             # 2. Borrar la carpeta del proyecto anterior
             rm -rf web/a24nildiabel.daw.inspedralbes.cat/private/test_autoescuela/
             
-            # 3. Clonar el repositorio de nuevo 
-            # (Si es privado, usa la URL con token: https://${{ secrets.REPO_TOKEN }}@github.com/usuario/repo.git)
+            # 3. Clonar el repositorio de nuevo
             git clone https://github.com/nildiabel/test_autoescuela web/a24nildiabel.daw.inspedralbes.cat/private/test_autoescuela
             
             # 4. Entrar al directorio
             cd web/a24nildiabel.daw.inspedralbes.cat/private/test_autoescuela/backend
             
-            # Opcional: Instalar dependencias (ej. npm install, pip install, etc.)
+            # 5. Instalar dependencias
             npm install
             
-            # 5. Arrancar el proyecto en una nueva screen separada (modo detached)
+            # 6. Arrancar el proyecto en una nueva screen
             screen -dmS test-autoescuela node server.js

@@ -48,6 +48,10 @@ app.get('/api/preguntes', (req, res) => {
   });
 });
 
-app.listen(port, () => {
-  console.log(`Servidor actiu a http://localhost:${port}`);
-});
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(port, () => {
+    console.log(`Servidor actiu a http://localhost:${port}`);
+  });
+}
+
+module.exports = app;
