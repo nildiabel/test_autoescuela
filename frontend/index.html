@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Barra superior estilo DGT -->
     <header class="dgt-header">
         <div class="dgt-header-content">
             <span class="dgt-title">Prueba de control de conocimientos · B</span>
@@ -17,7 +16,6 @@
     </header>
 
     <main class="main-container-fluid">
-        <!-- Formulario de acceso (centrado si no hay sesión) -->
         <form id="user-form" class="exam-card-center">
             <h2>Accés a l'Aula Virtual</h2>
             <div class="form-group">
@@ -31,22 +29,18 @@
             <button type="submit" class="btn-primary">Començar Test</button>
         </form>
 
-        <!-- Contenedor del Test (Pantalla completa estilo DGT) -->
         <section id="quiz-container" class="exam-panel-fluid hidden">
             
-            <!-- Zona central dividida en dos columnas: Imagen / Pregunta y Opciones -->
             <div class="exam-content-grid">
                 <div id="imatge-container" class="exam-image-box"></div>
                 <div id="partida" class="exam-question-box"></div>
             </div>
 
-            <!-- Botones de navegación o finalización -->
             <div class="exam-nav-bar">
                 <button id="boto-enviar" class="btn-success hidden">Finalitzar Test</button>
                 <button id="boto-esborrar" class="btn-secondary">Esborrar nom</button>
             </div>
 
-            <!-- Cuadrícula de números inferior (marcador estilo DGT) -->
             <div class="marcador-footer">
                 <div id="marcador" class="dgt-grid"></div>
             </div>
