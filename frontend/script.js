@@ -42,7 +42,7 @@ function displayUserName() {
   if (dataFromLocalStorage) {
     const userObj = JSON.parse(dataFromLocalStorage);
     
-    userNameText.textContent = `Hola! ${userObj.username}`;
+    userNameText.textContent = `Aspirant: ${userObj.username}`;
 
     userForm.classList.add("hidden");
     sessioPartida.classList.remove("hidden");
@@ -76,17 +76,28 @@ function renderitzarPregunta(index) {
   const p = preguntes[index];
   if (!p) return;
 
-  let botonsHTML = "";
-  for (let i = 0; i < 3; i++) {
-    botonsHTML += `<button class="boto-resposta" data-index="${i}">${p.respostes[i]}</button><br><br>`;
+  const imatgeContainer = document.getElementById("imatge-container");
+  if (imatgeContainer) {
+    if (p.imatge) {
+      imatgeContainer.innerHTML = `<img src="${p.imatge}" alt="Imatge pregunta">`;
+      imatgeContainer.style.display = "flex";
+    } else {
+      imatgeContainer.innerHTML = "";
+      imatgeContainer.style.display = "none";
+    }
   }
 
-  const imatgeHTML = p.imatge ? `<img src="${p.imatge}" alt="Imatge pregunta" style="max-width:300px;"><br>` : '';
+  let botonsHTML = "";
+  for (let i = 0; i < p.respostes.length; i++) {
+    if (p.respostes[i]) {
+      botonsHTML += `<button class="boto-resposta" data-index="${i}">${p.respostes[i]}</button>`;
+    }
+  }
 
+  const numPregunta = index < 9 ? `0${index + 1}` : index + 1;
   const contingut = `
-    <h2>${p.pregunta}</h2>${imatgeHTML}
-    <br>
-    <div>${botonsHTML}</div>
+    <h2><span style="color: #1e3a8a; font-weight: bold; font-size: 1.4rem; margin-right: 8px;">${numPregunta}.</span> ${p.pregunta}</h2>
+    <div class="opcions-container">${botonsHTML}</div>
   `;
 
   partidaDiv.innerHTML = contingut;
@@ -107,16 +118,25 @@ function clickBoto(textResposta) {
     renderitzarPregunta(estatDeLaPartida.contadorPreguntes);
   } else {
     partidaDiv.innerHTML = "<h3>Has completat totes les preguntes!</h3>";
+    
+    const imatgeContainer = document.getElementById("imatge-container");
+    if (imatgeContainer) imatgeContainer.style.display = "none";
   }
 }
 
 function renderitzarMarcador() {
-  const totalPreguntes = preguntes.length;
+  const totalPreguntes = preguntes ? preguntes.length : 10;
   const respostesFetes = estatDeLaPartida.contadorPreguntes;
 
   const marcadorDiv = document.getElementById("marcador");
   if (marcadorDiv) {
-    marcadorDiv.textContent = `Preguntes respostes: ${respostesFetes} de ${totalPreguntes}`;
+    let gridHTML = "";
+    for (let i = 1; i <= totalPreguntes; i++) {
+      const classe = i <= respostesFetes ? "responduda" : "";
+      const numeroFormatat = i < 10 ? `0${i}` : i;
+      gridHTML += `<span class="${classe}">${numeroFormatat}</span>`;
+    }
+    marcadorDiv.innerHTML = gridHTML;
   }
 
   if (respostesFetes === totalPreguntes && totalPreguntes > 0) {
