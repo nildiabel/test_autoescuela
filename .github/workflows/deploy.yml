@@ -23,14 +23,14 @@ jobs:
             screen -X -S test-autoescuela quit || true
             
             # 2. Borrar la carpeta del proyecto anterior
-            rm -rf /web/a24nildiabel.daw.inspedralbes.cat/private/test_autoescuela/
+            rm -rf web/a24nildiabel.daw.inspedralbes.cat/private/test_autoescuela/
             
             # 3. Clonar el repositorio de nuevo 
             # (Si es privado, usa la URL con token: https://${{ secrets.REPO_TOKEN }}@github.com/usuario/repo.git)
-            git clone https://github.com/nildiabel/test_autoescuela /web/a24nildiabel.daw.inspedralbes.cat/private/test_autoescuela
+            git clone https://github.com/nildiabel/test_autoescuela web/a24nildiabel.daw.inspedralbes.cat/private/test_autoescuela
             
             # 4. Entrar al directorio
-            cd /web/a24nildiabel.daw.inspedralbes.cat/private/test_autoescuela/backend
+            cd web/a24nildiabel.daw.inspedralbes.cat/private/test_autoescuela/backend
             
             # Opcional: Instalar dependencias (ej. npm install, pip install, etc.)
             npm install
