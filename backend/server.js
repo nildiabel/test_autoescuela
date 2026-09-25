@@ -37,7 +37,7 @@ app.get('/api/preguntes', (req, res) => {
   });
   console.log(`Sessió creada: ${sessionId}`);
 
-  const preguntesClientss = preguntesSeleccionades.map(question => {
+  const preguntesClients = preguntesSeleccionades.map(question => {
     const q = { ...question };
     delete q.resposta_correcta;
     return q;
@@ -45,11 +45,10 @@ app.get('/api/preguntes', (req, res) => {
 
   res.json({
     sessionId: sessionId,
-    questions: preguntesClientss
+    questions: preguntesClients
   });
 });
 
-// 2. Initialize DB, then start Express server
 async function startServer() {
   await initDatabase();
 
