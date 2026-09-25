@@ -1,14 +1,15 @@
 const express = require('express');
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
-const app = express();
-const port = Number(process.argv[2]) || 40550;
 const cors = require('cors');
 
+const { initDatabase } = require('./config/database');
+
+const app = express();
+const port = Number(process.argv[2]) || 40550;
 const dades = require('./data.json');
 
 let NumPreguntes = 10;
-
 const sessions = new Map();
 
 app.use(cors());
@@ -48,10 +49,17 @@ app.get('/api/preguntes', (req, res) => {
   });
 });
 
-if (process.env.NODE_ENV !== 'test') {
-  app.listen(port, () => {
-    console.log(`Servidor actiu a http://localhost:${port}`);
-  });
+// 2. Initialize DB, then start Express server
+async function startServer() {
+  await initDatabase();
+
+  if (process.env.NODE_ENV !== 'test') {
+    app.listen(port, () => {
+      console.log(`Servidor actiu a http://localhost:${port}`);
+    });
+  }
 }
+
+startServer();
 
 module.exports = app;
