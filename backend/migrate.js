@@ -14,11 +14,9 @@ async function executarMigracio() {
   `;
 
   try {
-    // 1. Creem la taula si no existeix
     await pool.query(createTableSql);
     console.log("✔️ Taula 'questions' verificada / creada.");
 
-    // 2. Comprovem si hi ha dades
     const [rows] = await pool.query('SELECT COUNT(*) AS total FROM questions');
     
     if (rows[0].total === 0) {
@@ -27,7 +25,6 @@ async function executarMigracio() {
       const preguntes = dades.preguntes;
       
       if (preguntes && preguntes.length > 0) {
-        // Preparem les dades per inserir. Les respostes les guardem com a JSON string.
         const values = preguntes.map(q => [
           q.pregunta,
           JSON.stringify(q.respostes), 
@@ -49,7 +46,6 @@ async function executarMigracio() {
   } catch (err) {
     console.error('❌ Error durant la migració:', err.message);
   } finally {
-    // Tanquem la connexió perquè l'script finalitzi
     pool.end(); 
   }
 }
