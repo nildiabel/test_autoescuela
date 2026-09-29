@@ -1,19 +1,43 @@
-version: '3.8'
-
 services:
   db:
     image: mysql:8.0
     container_name: mysql_db
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: mi_base_de_datos
-      MYSQL_USER: usuario
-      MYSQL_PASSWORD: password123
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Define MYSQL_ROOT_PASSWORD in your local .env file}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-mi_base_de_datos}
+      MYSQL_USER: ${MYSQL_USER:-usuario}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:?Define MYSQL_PASSWORD in your local .env file}
     ports:
-      - "3306:3306"
+      - "127.0.0.1:3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - mysql --protocol=TCP -h 127.0.0.1 -P 3306 -u"$${MYSQL_USER}" -p"$${MYSQL_PASSWORD}" "$${MYSQL_DATABASE}" -e 'SELECT 1' >/dev/null 2>&1
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: autoescuela_backend
+    restart: unless-stopped
+    environment:
+      DB_HOST: db
+      DB_USER: ${MYSQL_USER:-usuario}
+      DB_PASSWORD: ${MYSQL_PASSWORD:?Define MYSQL_PASSWORD in your local .env file}
+      DB_NAME: ${MYSQL_DATABASE:-mi_base_de_datos}
+      PORT: 40550
+    ports:
+      - "40550:40550"
+    depends_on:
+      db:
+        condition: service_healthy
 
   adminer:
     image: adminer:latest

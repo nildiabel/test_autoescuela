@@ -45,8 +45,9 @@ async function executarMigracio() {
     }
   } catch (err) {
     console.error('❌ Error durant la migració:', err.message);
+    process.exitCode = 1;
   } finally {
-    pool.end(); 
+    await pool.end();
   }
 }
 

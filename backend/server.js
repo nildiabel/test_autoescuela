@@ -7,7 +7,7 @@ const cors = require('cors');
 const { pool } = require('./config/database');
 
 const app = express();
-const port = Number(process.argv[2]) || 40550;
+const port = Number(process.env.PORT || process.argv[2]) || 40550;
 
 let NumPreguntes = 10;
 const sessions = new Map();
