@@ -37,6 +37,8 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           envs: DB_HOST,DB_USER,DB_PASSWORD,DB_NAME
           script: |
+            set -e
+
             # 1. Detener la sesión de screen anterior si existe
             screen -X -S test-autoescuela quit || true
             
