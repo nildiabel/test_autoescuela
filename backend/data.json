@@ -6,8 +6,7 @@
       "respostes": [
         "100 km/h",
         "120 km/h",
-        "130 km/h",
-        "110 km/h"
+        "130 km/h"
       ],
       "resposta_correcta": 1,
       "imatge": "./img/circulacio.jpg"
@@ -18,8 +17,7 @@
       "respostes": [
         "Reduir la velocitat i cedir el pas si s'apropa un altre vehicle",
         "Aturar completament el vehicle sempre abans de la línia de detenció",
-        "Aturar-se només si hi ha vianants creuant",
-        "Accelerar si la via transversal està lliure"
+        "Aturar-se només si hi ha vianants creuant"
       ],
       "resposta_correcta": 1,
       "imatge": "./img/stop.jpg"
@@ -30,8 +28,7 @@
       "respostes": [
         "0,25 mg/l",
         "0,15 mg/l",
-        "0,05 mg/l",
-        "0,50 mg/l"
+        "0,05 mg/l"
       ],
       "resposta_correcta": 1,
       "imatge": "./img/alcohol.jpg"
@@ -42,8 +39,7 @@
       "respostes": [
         "El vehicle que s'aproxima per l'esquerra",
         "El vehicle de major mida o tonatge",
-        "El vehicle que s'aproxima per la dreta",
-        "El vehicle que circula a major velocitat"
+        "El vehicle que s'aproxima per la dreta"
       ],
       "resposta_correcta": 2,
       "imatge": "./img/inteseccio.jpg"
@@ -54,8 +50,7 @@
       "respostes": [
         "Sí, tant en vies urbanes com en interurbanes",
         "Només en autopistes i autovies",
-        "Només si viatgen menors d'edat",
-        "No, només és obligatori per al conductor i copilot"
+        "Només si viatgen menors d'edat"
       ],
       "resposta_correcta": 0,
       "imatge": "./img/cinturo.jpg"
@@ -66,8 +61,7 @@
       "respostes": [
         "1 metre",
         "1,5 metres",
-        "2 metres",
-        "0,5 metres"
+        "2 metres"
       ],
       "resposta_correcta": 1,
       "imatge": "./img/ciclista.jpg"
@@ -78,8 +72,7 @@
       "respostes": [
         "50 km/h",
         "40 km/h",
-        "30 km/h",
-        "20 km/h"
+        "30 km/h"
       ],
       "resposta_correcta": 2,
       "imatge": "./img/circulacio.jpg"
@@ -90,8 +83,7 @@
       "respostes": [
         "Els antiboira davanters només",
         "Els antiboira posteriors",
-        "Els llums de carretera (llargues)",
-        "Cap, n'hi ha prou amb els llums de posició"
+        "Els llums de carretera (llargues)"
       ],
       "resposta_correcta": 1,
       "imatge": "./img/antiboira.webp"
@@ -102,8 +94,7 @@
       "respostes": [
         "Sempre que el carril de l'esquerra vagi lent",
         "Com a norma general, està totalment prohibit",
-        "Quan el vehicle de davant ho indiqui amb l'intermitent dret",
-        "Sempre que no se superi el límit de velocitat"
+        "Quan el vehicle de davant ho indiqui amb l'intermitent dret"
       ],
       "resposta_correcta": 1,
       "imatge": "./img/autoviajpg.jpg"
@@ -114,8 +105,7 @@
       "respostes": [
         "Que es pot travessar només per avançar",
         "Que cap vehicle pot travessar-la ni circular per sobre d'ella",
-        "Que el carril està reservat exclusivament a autobusos",
-        "Que s'aproxima una zona d'estacionament"
+        "Que el carril està reservat exclusivament a autobusos"
       ],
       "resposta_correcta": 1,
       "imatge": "./img/linea-continua.jpg"
@@ -126,8 +116,7 @@
       "respostes": [
         "Una obligació",
         "Una prohibició",
-        "Un perill",
-        "Una indicació general"
+        "Un perill"
       ],
       "resposta_correcta": 2,
       "imatge": "./img/senyal-perill.svg"
@@ -138,8 +127,7 @@
       "respostes": [
         "Només quan el vehicle estigui aturat en un semàfor en vermell",
         "No, està totalment prohibit i comporta pèrdua de punts",
-        "Sí, si s'utilitza a velocitats inferiors a 30 km/h",
-        "Només per enviar missatges curts d'àudio"
+        "Sí, si s'utilitza a velocitats inferiors a 30 km/h"
       ],
       "resposta_correcta": 1,
       "imatge": "./img/telefon-mobil.jpg"
@@ -150,8 +138,7 @@
       "respostes": [
         "50 km/h",
         "60 km/h",
-        "70 km/h",
-        "80 km/h"
+        "70 km/h"
       ],
       "resposta_correcta": 1,
       "imatge": "./img/velocitat-minima.jpg"
@@ -162,8 +149,7 @@
       "respostes": [
         "Els vehicles que pretenen accedir-hi des de la dreta",
         "Els vehicles que ja circulen per l'interior de la glorieta",
-        "Els vehicles més pesants o de transport públic",
-        "El vehicle que s'incorpori a major velocitat"
+        "Els vehicles més pesants o de transport públic"
       ],
       "resposta_correcta": 1,
       "imatge": "./img/rotonda.jpg"
@@ -174,8 +160,7 @@
       "respostes": [
         "A 30 metres del vehicle",
         "A 50 metres del vehicle i visible des de 100 metres",
-        "A 15 metres del vehicle",
-        "A 100 metres del vehicle"
+        "A 15 metres del vehicle"
       ],
       "resposta_correcta": 1,
       "imatge": "./img/triangle-avaria.jpg"
@@ -186,8 +171,7 @@
       "respostes": [
         "Fins als 120 cm",
         "Fins als 135 cm",
-        "Fins als 150 cm",
-        "Fins als 110 cm"
+        "Fins als 150 cm"
       ],
       "resposta_correcta": 1,
       "imatge": "./img/retencio-infantil.png"
@@ -198,8 +182,7 @@
       "respostes": [
         "Frenar bruscament a fons per immobilitzar el vehicle",
         "Afluixar suaument l'accelerador i subjectar fermament el volant sense fer girs bruscos",
-        "Accelerar per recuperar la tracció de les rodes",
-        "Accionar ràpidament el fre d'estacionament o de mà"
+        "Accelerar per recuperar la tracció de les rodes"
       ],
       "resposta_correcta": 1,
       "imatge": "./img/aquaplaning.jpg"
@@ -210,8 +193,7 @@
       "respostes": [
         "Només amb els llums de posició",
         "Amb l'enllumenat de posició i el de curt abast (creuament)",
-        "Amb els llums de llarg abast (carretera)",
-        "No és necessari encendre cap llum si està il·luminat"
+        "Amb els llums de llarg abast (carretera)"
       ],
       "resposta_correcta": 1,
       "imatge": "./img/tunel.jpg"
@@ -222,8 +204,7 @@
       "respostes": [
         "Sí, si no s'obstaculitza la circulació d'altres vehicles",
         "Sí, sempre que no se superin els 15 metres",
-        "No, està totalment prohibit fer marxa enrere",
-        "Només per la zona del voral amb els llums d'emergència encesos"
+        "No, està totalment prohibit fer marxa enrere"
       ],
       "resposta_correcta": 2,
       "imatge": "./img/marxa-enrere.jpg"
@@ -234,8 +215,7 @@
       "respostes": [
         "Cada any des del primer any",
         "Als 2 anys per primer cop",
-        "Als 4 anys per primer cop",
-        "Als 5 anys per primer cop"
+        "Als 4 anys per primer cop"
       ],
       "resposta_correcta": 2,
       "imatge": "./img/itv.jpg"
