@@ -48,7 +48,11 @@ app.get('/api/preguntes', async (req, res) => {
 
     const sessionId = uuidv4();
     sessions.set(sessionId, {
-      questions: preguntesSeleccionades.map(q => q.id)
+      questions: preguntesSeleccionades.map(q => ({
+        id: q.id,
+        respostaCorrecta: q.resposta_correcta,
+        nombreRespostes: q.respostes.length
+      }))
     });
     console.log(`Sessió creada: ${sessionId}`);
 
@@ -68,6 +72,39 @@ app.get('/api/preguntes', async (req, res) => {
     console.error("Error al servidor:", error);
     res.status(500).json({ error: "Error intern del servidor" });
   }
+});
+
+app.post('/api/finalitza', (req, res) => {
+  const { sessionId, respostes } = req.body;
+  const sessio = sessions.get(sessionId);
+
+  if (!sessio) {
+    return res.status(404).json({ error: 'La sessió no existeix o ha caducat' });
+  }
+
+  if (
+    !Array.isArray(respostes) ||
+    respostes.length !== sessio.questions.length ||
+    !respostes.every((resposta, index) =>
+      Number.isInteger(resposta) &&
+      resposta >= 0 &&
+      resposta < sessio.questions[index].nombreRespostes
+    )
+  ) {
+    return res.status(400).json({ error: 'Les respostes enviades no són vàlides' });
+  }
+
+  const respostesCorrectes = respostes.reduce(
+    (total, resposta, index) =>
+      total + Number(resposta === sessio.questions[index].respostaCorrecta),
+    0
+  );
+
+  sessions.delete(sessionId);
+  res.json({
+    totalRespostes: sessio.questions.length,
+    respostesCorrectes
+  });
 });
 
 // Llistar TOTES les preguntes originals (CRUD Read)
