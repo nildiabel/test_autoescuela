@@ -21,6 +21,7 @@ jobs:
       - name: Instalar dependencias y ejecutar tests
         run: |
           npm install
+          npm run build
           npm test
         working-directory: ./backend
 
@@ -54,8 +55,11 @@ jobs:
             # 5. Instalar dependencias
             npm install
 
-            # 6. Preparar la base de datos
+            # 6. Compilar els estils de Tailwind
+            npm run build
+
+            # 7. Preparar la base de datos
             node migrate.js
             
-            # 7. Arrancar el proyecto en una nueva screen
+            # 8. Arrancar el proyecto en una nueva screen
             screen -dmS test-autoescuela node server.js
