@@ -19,8 +19,20 @@ const sessioPartida = document.getElementById("quiz-container");
 const userNameText = document.getElementById("userNameText");
 const partidaDiv = document.getElementById("partida");
 const botoEnviar = document.getElementById("boto-enviar");
+const adminContainer = document.getElementById("admin-container");
+const adminForm = document.getElementById("admin-question-form");
+const adminAnswers = document.getElementById("admin-answers");
+const adminCorrectAnswer = document.getElementById("admin-correct-answer");
+const adminQuestionsList = document.getElementById("admin-questions-list");
+const adminMessage = document.getElementById("admin-message");
 
 botoEnviar.addEventListener("click", finalitzarPartida);
+document.getElementById("boto-obrir-admin").addEventListener("click", obrirPanellAdmin);
+document.getElementById("boto-tornar-inici").addEventListener("click", tancarPanellAdmin);
+document.getElementById("admin-cancel-edit").addEventListener("click", reiniciarFormulariAdmin);
+adminForm.addEventListener("submit", desarPreguntaAdmin);
+adminAnswers.addEventListener("input", () => actualitzarOpcionsCorrectes());
+adminQuestionsList.addEventListener("click", gestionarAccioPreguntaAdmin);
 
 botoEsborrar.addEventListener('click', function () {
   localStorage.removeItem('user');
@@ -61,6 +73,256 @@ function displayUserName() {
 }
 
 displayUserName();
+
+function obrirPanellAdmin() {
+  userForm.classList.add("hidden");
+  sessioPartida.classList.add("hidden");
+  adminContainer.classList.remove("hidden");
+  carregarPreguntesAdmin();
+}
+
+function tancarPanellAdmin() {
+  adminContainer.classList.add("hidden");
+  displayUserName();
+}
+
+async function carregarPreguntesAdmin() {
+  adminMessage.textContent = "Carregant preguntes...";
+  adminMessage.classList.remove("error");
+
+  try {
+    const resposta = await fetch("./api/crud/preguntes");
+    const preguntesAdmin = await resposta.json();
+    if (!resposta.ok) {
+      throw new Error(preguntesAdmin.error || "No s'han pogut carregar les preguntes.");
+    }
+
+    mostrarPreguntesAdmin(preguntesAdmin);
+    adminMessage.textContent = `${preguntesAdmin.length} preguntes carregades.`;
+  } catch (error) {
+    adminQuestionsList.replaceChildren();
+    mostrarErrorAdmin(error);
+  }
+}
+
+function mostrarPreguntesAdmin(preguntesAdmin) {
+  adminQuestionsList.replaceChildren();
+
+  if (preguntesAdmin.length === 0) {
+    const buit = document.createElement("p");
+    buit.textContent = "Encara no hi ha preguntes a la base de dades.";
+    adminQuestionsList.append(buit);
+    return;
+  }
+
+  preguntesAdmin.forEach(pregunta => {
+    const targeta = document.createElement("article");
+    targeta.className = "admin-question-card";
+
+    const titol = document.createElement("h3");
+    titol.textContent = pregunta.pregunta;
+    targeta.append(titol);
+
+    const llistaRespostes = document.createElement("ol");
+    pregunta.respostes.forEach((resposta, index) => {
+      const opcio = document.createElement("li");
+      opcio.textContent = resposta;
+      if (index === pregunta.resposta_correcta) {
+        opcio.classList.add("admin-correct-answer");
+        opcio.append(document.createTextNode(" (correcta)"));
+      }
+      llistaRespostes.append(opcio);
+    });
+    targeta.append(llistaRespostes);
+
+    if (pregunta.imatge) {
+      const rutaImatge = document.createElement("p");
+      rutaImatge.className = "admin-image-path";
+      rutaImatge.textContent = `Imatge: ${pregunta.imatge}`;
+      targeta.append(rutaImatge);
+    }
+
+    const accions = document.createElement("div");
+    accions.className = "admin-card-actions";
+    const botoEditar = document.createElement("button");
+    botoEditar.type = "button";
+    botoEditar.className = "btn-secondary";
+    botoEditar.dataset.action = "edit";
+    botoEditar.dataset.id = pregunta.id;
+    botoEditar.textContent = "Editar";
+
+    const botoEliminar = document.createElement("button");
+    botoEliminar.type = "button";
+    botoEliminar.className = "btn-danger";
+    botoEliminar.dataset.action = "delete";
+    botoEliminar.dataset.id = pregunta.id;
+    botoEliminar.textContent = "Esborrar";
+
+    accions.append(botoEditar, botoEliminar);
+    targeta.append(accions);
+    adminQuestionsList.append(targeta);
+  });
+}
+
+function actualitzarOpcionsCorrectes(indexPreferit = Number(adminCorrectAnswer.value)) {
+  const respostes = adminAnswers.value
+    .split("\n")
+    .map(resposta => resposta.trim())
+    .filter(Boolean);
+
+  adminCorrectAnswer.replaceChildren();
+  if (respostes.length === 0) {
+    const opcio = document.createElement("option");
+    opcio.value = "";
+    opcio.textContent = "Afegeix primer les respostes";
+    adminCorrectAnswer.append(opcio);
+    adminCorrectAnswer.disabled = true;
+    return;
+  }
+
+  respostes.forEach((resposta, index) => {
+    const opcio = document.createElement("option");
+    opcio.value = String(index);
+    opcio.textContent = `Resposta ${index + 1}: ${resposta}`;
+    adminCorrectAnswer.append(opcio);
+  });
+  adminCorrectAnswer.disabled = false;
+  adminCorrectAnswer.value = String(
+    Number.isInteger(indexPreferit) && indexPreferit >= 0 && indexPreferit < respostes.length
+      ? indexPreferit
+      : 0
+  );
+}
+
+function iniciarEdicioPregunta(pregunta) {
+  document.getElementById("admin-question-id").value = pregunta.id;
+  document.getElementById("admin-question-text").value = pregunta.pregunta;
+  adminAnswers.value = pregunta.respostes.join("\n");
+  actualitzarOpcionsCorrectes(pregunta.resposta_correcta);
+  document.getElementById("admin-image-path").value = pregunta.imatge || "";
+  document.getElementById("admin-current-image").textContent = pregunta.imatge
+    ? `Imatge actual: ${pregunta.imatge}. Tria un fitxer nou per substituir-la.`
+    : "Aquesta pregunta no té cap imatge.";
+  document.getElementById("admin-current-image").classList.remove("hidden");
+  document.getElementById("admin-form-title").textContent = "Editar pregunta";
+  document.getElementById("admin-save-button").textContent = "Desar canvis";
+  document.getElementById("admin-cancel-edit").classList.remove("hidden");
+  adminForm.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function reiniciarFormulariAdmin() {
+  adminForm.reset();
+  document.getElementById("admin-question-id").value = "";
+  document.getElementById("admin-form-title").textContent = "Crear pregunta";
+  document.getElementById("admin-save-button").textContent = "Crear pregunta";
+  document.getElementById("admin-cancel-edit").classList.add("hidden");
+  document.getElementById("admin-image-path").value = "";
+  document.getElementById("admin-current-image").textContent = "";
+  document.getElementById("admin-current-image").classList.add("hidden");
+  actualitzarOpcionsCorrectes();
+}
+
+async function gestionarAccioPreguntaAdmin(event) {
+  const boto = event.target.closest("button[data-action]");
+  if (!boto) return;
+
+  const preguntaId = boto.dataset.id;
+  if (boto.dataset.action === "edit") {
+    try {
+      const resposta = await fetch("./api/crud/preguntes");
+      const preguntesAdmin = await resposta.json();
+      if (!resposta.ok) {
+        throw new Error(preguntesAdmin.error || "No s'han pogut carregar les preguntes.");
+      }
+      const pregunta = preguntesAdmin.find(item => String(item.id) === preguntaId);
+      if (!pregunta) throw new Error("No s'ha trobat la pregunta seleccionada.");
+      iniciarEdicioPregunta(pregunta);
+    } catch (error) {
+      mostrarErrorAdmin(error);
+    }
+    return;
+  }
+
+  const targeta = boto.closest(".admin-question-card");
+  const titolPregunta = targeta.querySelector("h3").textContent;
+  if (!window.confirm(`Vols esborrar la pregunta "${titolPregunta}"?`)) return;
+
+  try {
+    const resposta = await fetch(`./api/crud/preguntes/${encodeURIComponent(preguntaId)}`, {
+      method: "DELETE"
+    });
+    const resultat = await resposta.json();
+    if (!resposta.ok) {
+      throw new Error(resultat.error || "No s'ha pogut esborrar la pregunta.");
+    }
+    reiniciarFormulariAdmin();
+    adminMessage.textContent = "Pregunta esborrada correctament.";
+    await carregarPreguntesAdmin();
+  } catch (error) {
+    mostrarErrorAdmin(error);
+  }
+}
+
+async function desarPreguntaAdmin(event) {
+  event.preventDefault();
+
+  const respostes = adminAnswers.value
+    .split("\n")
+    .map(resposta => resposta.trim())
+    .filter(Boolean);
+  const pregunta = document.getElementById("admin-question-text").value.trim();
+  const respostaCorrecta = Number(adminCorrectAnswer.value);
+
+  if (!pregunta || respostes.length < 2 || !Number.isInteger(respostaCorrecta)) {
+    adminMessage.textContent = "Escriu una pregunta i com a mínim dues respostes, i marca'n la correcta.";
+    adminMessage.classList.add("error");
+    return;
+  }
+
+  const questionId = document.getElementById("admin-question-id").value;
+  const dades = new FormData();
+  dades.append("pregunta", pregunta);
+  dades.append("respostes", JSON.stringify(respostes));
+  dades.append("resposta_correcta", String(respostaCorrecta));
+  const rutaActual = document.getElementById("admin-image-path").value;
+  dades.append("imatge", rutaActual || "");
+
+  const fitxerImatge = document.getElementById("admin-image").files[0];
+  if (fitxerImatge) {
+    dades.append("imatgeFile", fitxerImatge);
+  }
+
+  try {
+    const resposta = await fetch(
+      questionId
+        ? `./api/crud/preguntes/${encodeURIComponent(questionId)}`
+        : "./api/crud/preguntes",
+      {
+        method: questionId ? "PUT" : "POST",
+        body: dades
+      }
+    );
+    const resultat = await resposta.json();
+    if (!resposta.ok) {
+      throw new Error(resultat.error || "No s'ha pogut desar la pregunta.");
+    }
+
+    reiniciarFormulariAdmin();
+    adminMessage.textContent = questionId
+      ? "Pregunta modificada correctament."
+      : "Pregunta creada correctament.";
+    adminMessage.classList.remove("error");
+    await carregarPreguntesAdmin();
+  } catch (error) {
+    mostrarErrorAdmin(error);
+  }
+}
+
+function mostrarErrorAdmin(error) {
+  console.error("Error al gestionar les preguntes:", error);
+  adminMessage.textContent = error.message;
+  adminMessage.classList.add("error");
+}
 
 partidaDiv.addEventListener("click", (event) => {
   if (event.target.classList.contains("boto-resposta")) {

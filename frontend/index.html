@@ -27,7 +27,53 @@
                 <input type="email" id="email" required>
             </div>
             <button type="submit" class="btn-primary">Començar Test</button>
+            <button type="button" id="boto-obrir-admin" class="admin-access-link">Panell d'administració</button>
         </form>
+
+        <section id="admin-container" class="admin-panel hidden">
+            <div class="admin-header">
+                <div>
+                    <h1>Panell d'administració</h1>
+                    <p>Gestiona les preguntes de la base de dades.</p>
+                </div>
+                <button type="button" id="boto-tornar-inici" class="btn-secondary">Tornar a l'inici</button>
+            </div>
+
+            <form id="admin-question-form" class="admin-form">
+                <h2 id="admin-form-title">Crear pregunta</h2>
+                <input type="hidden" id="admin-question-id">
+                <div class="form-group">
+                    <label for="admin-question-text">Pregunta:</label>
+                    <textarea id="admin-question-text" rows="3" required></textarea>
+                </div>
+                <div class="admin-form-grid">
+                    <div class="form-group">
+                        <label for="admin-answers">Respostes (una per línia):</label>
+                        <textarea id="admin-answers" rows="4" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="admin-correct-answer">Resposta correcta:</label>
+                        <select id="admin-correct-answer" required disabled>
+                            <option value="">Afegeix primer les respostes</option>
+                        </select>
+                        <label for="admin-image">Imatge (opcional, JPG, PNG, GIF o WebP):</label>
+                        <input type="file" id="admin-image" accept="image/jpeg,image/png,image/gif,image/webp">
+                        <input type="hidden" id="admin-image-path">
+                        <p id="admin-current-image" class="admin-image-path hidden"></p>
+                    </div>
+                </div>
+                <div class="admin-form-actions">
+                    <button type="submit" id="admin-save-button" class="btn-success">Crear pregunta</button>
+                    <button type="button" id="admin-cancel-edit" class="btn-secondary hidden">Cancel·lar edició</button>
+                </div>
+            </form>
+
+            <p id="admin-message" class="admin-message" role="status" aria-live="polite"></p>
+            <section class="admin-questions-section" aria-labelledby="admin-questions-title">
+                <h2 id="admin-questions-title">Preguntes existents</h2>
+                <div id="admin-questions-list" class="admin-questions-list"></div>
+            </section>
+        </section>
 
         <section id="quiz-container" class="exam-panel-fluid hidden">
             
