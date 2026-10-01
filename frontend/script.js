@@ -88,7 +88,8 @@ function tancarPanellAdmin() {
 
 async function carregarPreguntesAdmin() {
   adminMessage.textContent = "Carregant preguntes...";
-  adminMessage.classList.remove("error");
+  adminMessage.classList.remove("text-rose-700");
+  adminMessage.classList.add("text-emerald-700");
 
   try {
     const resposta = await fetch("./api/crud/preguntes");
@@ -117,18 +118,20 @@ function mostrarPreguntesAdmin(preguntesAdmin) {
 
   preguntesAdmin.forEach(pregunta => {
     const targeta = document.createElement("article");
-    targeta.className = "admin-question-card";
+    targeta.className = "rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:border-slate-300 sm:p-6";
 
     const titol = document.createElement("h3");
+    titol.className = "mb-3 text-lg font-semibold tracking-tight text-slate-900";
     titol.textContent = pregunta.pregunta;
     targeta.append(titol);
 
     const llistaRespostes = document.createElement("ol");
+    llistaRespostes.className = "list-decimal space-y-1 pl-5 text-sm text-slate-600";
     pregunta.respostes.forEach((resposta, index) => {
       const opcio = document.createElement("li");
       opcio.textContent = resposta;
       if (index === pregunta.resposta_correcta) {
-        opcio.classList.add("admin-correct-answer");
+        opcio.className = "font-semibold text-emerald-700";
         opcio.append(document.createTextNode(" (correcta)"));
       }
       llistaRespostes.append(opcio);
@@ -137,23 +140,23 @@ function mostrarPreguntesAdmin(preguntesAdmin) {
 
     if (pregunta.imatge) {
       const rutaImatge = document.createElement("p");
-      rutaImatge.className = "admin-image-path";
+      rutaImatge.className = "mt-3 break-all text-sm text-slate-500";
       rutaImatge.textContent = `Imatge: ${pregunta.imatge}`;
       targeta.append(rutaImatge);
     }
 
     const accions = document.createElement("div");
-    accions.className = "admin-card-actions";
+    accions.className = "mt-4 flex flex-wrap items-center gap-2";
     const botoEditar = document.createElement("button");
     botoEditar.type = "button";
-    botoEditar.className = "btn-secondary";
+    botoEditar.className = "rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 focus:outline-none focus:ring-4 focus:ring-slate-100";
     botoEditar.dataset.action = "edit";
     botoEditar.dataset.id = pregunta.id;
     botoEditar.textContent = "Editar";
 
     const botoEliminar = document.createElement("button");
     botoEliminar.type = "button";
-    botoEliminar.className = "btn-danger";
+    botoEliminar.className = "rounded-xl bg-rose-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-rose-700 focus:outline-none focus:ring-4 focus:ring-rose-100";
     botoEliminar.dataset.action = "delete";
     botoEliminar.dataset.id = pregunta.id;
     botoEliminar.textContent = "Esborrar";
@@ -243,7 +246,7 @@ async function gestionarAccioPreguntaAdmin(event) {
     return;
   }
 
-  const targeta = boto.closest(".admin-question-card");
+  const targeta = boto.closest("article");
   const titolPregunta = targeta.querySelector("h3").textContent;
   if (!window.confirm(`Vols esborrar la pregunta "${titolPregunta}"?`)) return;
 
@@ -275,7 +278,8 @@ async function desarPreguntaAdmin(event) {
 
   if (!pregunta || respostes.length < 2 || !Number.isInteger(respostaCorrecta)) {
     adminMessage.textContent = "Escriu una pregunta i com a mínim dues respostes, i marca'n la correcta.";
-    adminMessage.classList.add("error");
+    adminMessage.classList.remove("text-emerald-700");
+    adminMessage.classList.add("text-rose-700");
     return;
   }
 
@@ -311,7 +315,8 @@ async function desarPreguntaAdmin(event) {
     adminMessage.textContent = questionId
       ? "Pregunta modificada correctament."
       : "Pregunta creada correctament.";
-    adminMessage.classList.remove("error");
+    adminMessage.classList.remove("text-rose-700");
+    adminMessage.classList.add("text-emerald-700");
     await carregarPreguntesAdmin();
   } catch (error) {
     mostrarErrorAdmin(error);
@@ -321,20 +326,23 @@ async function desarPreguntaAdmin(event) {
 function mostrarErrorAdmin(error) {
   console.error("Error al gestionar les preguntes:", error);
   adminMessage.textContent = error.message;
-  adminMessage.classList.add("error");
+  adminMessage.classList.remove("text-emerald-700");
+  adminMessage.classList.add("text-rose-700");
 }
 
 partidaDiv.addEventListener("click", (event) => {
-  if (event.target.classList.contains("boto-resposta")) {
-    const indexResposta = Number(event.target.dataset.index);
+  const botoResposta = event.target.closest("button[data-index]");
+  if (botoResposta) {
+    const indexResposta = Number(botoResposta.dataset.index);
     clickBoto(indexResposta);
   }
 });
 
 document.getElementById("marcador").addEventListener("click", (event) => {
-  if (!event.target.classList.contains("boto-pregunta")) return;
+  const botoPregunta = event.target.closest("button[data-pregunta]");
+  if (!botoPregunta) return;
 
-  estatDeLaPartida.preguntaActual = Number(event.target.dataset.pregunta);
+  estatDeLaPartida.preguntaActual = Number(botoPregunta.dataset.pregunta);
   renderitzarPregunta(estatDeLaPartida.preguntaActual);
   renderitzarMarcador();
 });
@@ -386,10 +394,12 @@ function renderitzarPregunta(index) {
   if (imatgeContainer) {
     if (p.imatge) {
       imatgeContainer.innerHTML = `<img src="${p.imatge}" alt="Imatge pregunta">`;
-      imatgeContainer.style.display = "flex";
+      imatgeContainer.classList.remove("hidden");
+      imatgeContainer.classList.add("flex");
     } else {
       imatgeContainer.innerHTML = "";
-      imatgeContainer.style.display = "none";
+      imatgeContainer.classList.add("hidden");
+      imatgeContainer.classList.remove("flex");
     }
   }
 
@@ -397,14 +407,17 @@ function renderitzarPregunta(index) {
   for (let i = 0; i < p.respostes.length; i++) {
     if (p.respostes[i]) {
       const respostaSeleccionada = estatDeLaPartida.respostesUsuari[index].resposta === i;
-      botonsHTML += `<button class="boto-resposta${respostaSeleccionada ? " seleccionada" : ""}" data-index="${i}" aria-pressed="${respostaSeleccionada}">${p.respostes[i]}</button>`;
+      const classesResposta = respostaSeleccionada
+        ? "mb-3 block w-full rounded-2xl border border-indigo-600 bg-indigo-50 px-5 py-4 text-left font-medium text-indigo-900 shadow-sm ring-2 ring-indigo-100 transition"
+        : "mb-3 block w-full rounded-2xl border border-slate-200 bg-white px-5 py-4 text-left font-medium text-slate-700 shadow-sm transition hover:border-indigo-300 hover:bg-indigo-50 hover:shadow";
+      botonsHTML += `<button class="${classesResposta}" data-index="${i}" aria-pressed="${respostaSeleccionada}">${p.respostes[i]}</button>`;
     }
   }
 
   const numPregunta = index < 9 ? `0${index + 1}` : index + 1;
   const contingut = `
-    <h2><span style="color: #1e3a8a; font-weight: bold; font-size: 1.4rem; margin-right: 8px;">${numPregunta}.</span> ${p.pregunta}</h2>
-    <div class="opcions-container">${botonsHTML}</div>
+    <h2 class="mb-6 text-xl font-semibold leading-relaxed tracking-tight text-slate-900 sm:text-2xl"><span class="mr-2 text-indigo-700">${numPregunta}.</span> ${p.pregunta}</h2>
+    <div>${botonsHTML}</div>
   `;
 
   partidaDiv.innerHTML = contingut;
@@ -457,7 +470,7 @@ async function finalitzarPartida() {
     }
 
     estatDeLaPartida.finalitzada = true;
-    partidaDiv.innerHTML = `<h3>Resultat: ${resultat.respostesCorrectes}/${resultat.totalRespostes}</h3>`;
+    partidaDiv.innerHTML = `<h3 class="text-2xl font-semibold tracking-tight text-slate-900">Resultat: ${resultat.respostesCorrectes}/${resultat.totalRespostes}</h3>`;
     botoEnviar.classList.add("hidden");
     renderitzarMarcador();
   } catch (error) {
@@ -479,11 +492,14 @@ function renderitzarMarcador() {
       const index = i - 1;
       const respostaDesada = estatDeLaPartida.respostesUsuari[index].resposta !== null;
       const preguntaActual = index === estatDeLaPartida.preguntaActual;
-      const classes = [
-        "boto-pregunta",
-        respostaDesada ? "responduda" : "",
-        preguntaActual ? "actual" : ""
-      ].filter(Boolean).join(" ");
+        const classes = [
+          "rounded-xl border px-2 py-2.5 text-sm font-semibold transition focus:outline-none focus:ring-4 focus:ring-indigo-100",
+          respostaDesada
+            ? "border-emerald-200 bg-emerald-50 text-emerald-800 hover:bg-emerald-100"
+            : "border-slate-200 bg-white text-slate-500 hover:border-indigo-300 hover:bg-indigo-50",
+          preguntaActual ? "ring-2 ring-indigo-300" : "",
+          estatDeLaPartida.finalitzada ? "cursor-not-allowed opacity-60" : ""
+        ].filter(Boolean).join(" ");
       const numeroFormatat = i < 10 ? `0${i}` : i;
       const estat = respostaDesada ? "resposta desada" : "sense respondre";
       gridHTML += `<button type="button" class="${classes}" data-pregunta="${index}" aria-label="Pregunta ${i}, ${estat}" aria-current="${preguntaActual ? "step" : "false"}"${estatDeLaPartida.finalitzada ? " disabled" : ""}>${numeroFormatat}</button>`;
