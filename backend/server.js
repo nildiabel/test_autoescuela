@@ -25,15 +25,10 @@ function barrejarArray(array) {
   return array;
 }
 
-// ==========================================
-// ENDPOINT DEL JOC (No trenca el client)
-// ==========================================
 app.get('/api/preguntes', async (req, res) => {
   try {
-    // Obtenim Totes les preguntes de MySQL
     const [rows] = await pool.query('SELECT * FROM questions');
 
-    // Transformació de dades: MySQL pot retornar les respostes com un string o com objecte depenent del driver
     const totesLesPreguntes = rows.map(row => ({
       id: row.id,
       pregunta: row.pregunta,
@@ -42,7 +37,6 @@ app.get('/api/preguntes', async (req, res) => {
       imatge: row.imatge
     }));
 
-    // Lògica del joc: barrejar i seleccionar
     const preguntesBarrejades = barrejarArray(totesLesPreguntes);
     const preguntesSeleccionades = preguntesBarrejades.slice(0, NumPreguntes);
 
@@ -56,7 +50,6 @@ app.get('/api/preguntes', async (req, res) => {
     });
     console.log(`Sessió creada: ${sessionId}`);
 
-    // Transformem de nou per amagar la resposta correcta al client
     const preguntesClients = preguntesSeleccionades.map(question => {
       const q = { ...question };
       delete q.resposta_correcta;
