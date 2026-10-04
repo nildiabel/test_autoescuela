@@ -140,7 +140,7 @@ app.get('/api/preguntes', async (req, res) => {
     const sessionId = uuidv4();
     sessions.set(sessionId, {
       questions: preguntesSeleccionades.map(q => ({
-        id: q.id,
+        ...q,
         respostaCorrecta: q.resposta_correcta,
         nombreRespostes: q.respostes.length
       }))
@@ -189,11 +189,24 @@ app.post('/api/finalitza', (req, res) => {
       total + Number(resposta === sessio.questions[index].respostaCorrecta),
     0
   );
+  const preguntesFallades = sessio.questions.reduce((fallades, pregunta, index) => {
+    if (respostes[index] !== pregunta.respostaCorrecta) {
+      fallades.push({
+        pregunta: pregunta.pregunta,
+        respostes: pregunta.respostes,
+        respostaCorrecta: pregunta.respostaCorrecta,
+        respostaUsuari: respostes[index],
+        imatge: pregunta.imatge
+      });
+    }
+    return fallades;
+  }, []);
 
   sessions.delete(sessionId);
   res.json({
     totalRespostes: sessio.questions.length,
-    respostesCorrectes
+    respostesCorrectes,
+    preguntesFallades
   });
 });
 

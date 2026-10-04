@@ -57,7 +57,32 @@ describe('POST /api/finalitza', () => {
     expect(resultat.statusCode).toBe(200);
     expect(resultat.body).toEqual({
       totalRespostes: 2,
-      respostesCorrectes: 2
+      respostesCorrectes: 2,
+      preguntesFallades: []
+    });
+  });
+
+  it('inclou les preguntes fallades i les respostes correcta i seleccionada', async () => {
+    const partida = await request(app).get('/api/preguntes');
+    const respostes = partida.body.questions.map(pregunta =>
+      pregunta.id === 1 ? 0 : 0
+    );
+
+    const resultat = await request(app)
+      .post('/api/finalitza')
+      .send({ sessionId: partida.body.sessionId, respostes });
+
+    expect(resultat.statusCode).toBe(200);
+    expect(resultat.body).toEqual({
+      totalRespostes: 2,
+      respostesCorrectes: 1,
+      preguntesFallades: [{
+        pregunta: 'Pregunta 1',
+        respostes: ['A', 'B'],
+        respostaCorrecta: 1,
+        respostaUsuari: 0,
+        imatge: null
+      }]
     });
   });
 

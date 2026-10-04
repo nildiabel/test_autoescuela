@@ -25,8 +25,15 @@ const adminAnswers = document.getElementById("admin-answers");
 const adminCorrectAnswer = document.getElementById("admin-correct-answer");
 const adminQuestionsList = document.getElementById("admin-questions-list");
 const adminMessage = document.getElementById("admin-message");
+const resultActions = document.getElementById("result-actions");
+const resultActionMessage = document.getElementById("result-action-message");
+const botoRecomencar = document.getElementById("boto-recomencar");
+const examControls = document.getElementById("exam-controls");
+const questionMarker = document.getElementById("question-marker");
 
 botoEnviar.addEventListener("click", finalitzarPartida);
+document.getElementById("boto-recomencar").addEventListener("click", recomencarPartida);
+document.getElementById("boto-esborrar-resultat").addEventListener("click", esborrarNom);
 document.getElementById("boto-obrir-admin").addEventListener("click", obrirPanellAdmin);
 document.getElementById("boto-tornar-inici").addEventListener("click", tancarPanellAdmin);
 document.getElementById("admin-cancel-edit").addEventListener("click", reiniciarFormulariAdmin);
@@ -35,15 +42,21 @@ adminAnswers.addEventListener("input", () => actualitzarOpcionsCorrectes());
 adminQuestionsList.addEventListener("click", gestionarAccioPreguntaAdmin);
 
 botoEsborrar.addEventListener('click', function () {
-  localStorage.removeItem('user');
-  displayUserName();
+  esborrarNom();
 });          
 
-userForm.addEventListener('submit', function (event) {
+userForm.addEventListener('submit', async function (event) {
   event.preventDefault();
 
   const nameValue = document.getElementById('name').value.trim();
   const emailValue = document.getElementById('email').value.trim();
+
+  try {
+    await carregarPartida();
+  } catch (error) {
+    console.error("Error carregant les dades:", error);
+    return;
+  }
 
   const userObj = {
     username: nameValue,
@@ -67,12 +80,23 @@ function displayUserName() {
     userForm.classList.add("hidden");
     sessioPartida.classList.remove("hidden");
   } else {
+    userNameText.textContent = "Aspirant:";
     userForm.classList.remove("hidden");
     sessioPartida.classList.add("hidden");
   }
 }
 
 displayUserName();
+
+function esborrarNom() {
+  aturarTemporitzador();
+  localStorage.removeItem('user');
+  userForm.reset();
+  resultActions.classList.add("hidden");
+  examControls.classList.remove("hidden");
+  questionMarker.classList.remove("hidden");
+  displayUserName();
+}
 
 function obrirPanellAdmin() {
   userForm.classList.add("hidden");
@@ -347,17 +371,56 @@ document.getElementById("marcador").addEventListener("click", (event) => {
   renderitzarMarcador();
 });
 
-fetch('./api/preguntes')
-  .then(res => res.json())
-  .then(data => {
-    estatDeLaPartida.sessionId = data.sessionId; 
-    preguntes = data.questions; 
-    
-    renderitzarPregunta(0);
-    renderitzarMarcador();
+async function carregarPartida() {
+  const resposta = await fetch('./api/preguntes');
+  const data = await resposta.json();
+  if (!resposta.ok) {
+    throw new Error(data.error || "No s'han pogut carregar les preguntes.");
+  }
+
+  preguntes = data.questions;
+  estatDeLaPartida = {
+    sessionId: data.sessionId,
+    preguntaActual: 0,
+    finalitzada: false,
+    respostesUsuari: preguntes.map(pregunta => ({
+      id_pregunta: pregunta.id,
+      resposta: null
+    }))
+  };
+  segonsTranscorreguts = 0;
+  partidaDiv.replaceChildren();
+  resultActions.classList.add("hidden");
+  resultActionMessage.textContent = "";
+  examControls.classList.remove("hidden");
+  questionMarker.classList.remove("hidden");
+  botoEnviar.disabled = false;
+  botoEnviar.classList.add("hidden");
+
+  const imatgeContainer = document.getElementById("imatge-container");
+  imatgeContainer.classList.remove("hidden");
+  imatgeContainer.classList.add("flex");
+  const contingutPartida = partidaDiv.parentElement;
+  contingutPartida.classList.remove("grid-cols-1");
+  contingutPartida.classList.add("lg:grid-cols-[minmax(0,420px)_1fr]");
+  renderitzarPregunta(0);
+  renderitzarMarcador();
+}
+
+async function recomencarPartida() {
+  botoRecomencar.disabled = true;
+  resultActionMessage.textContent = "Carregant una partida nova...";
+
+  try {
+    await carregarPartida();
     iniciarTemporitzador();
-  })
-  .catch(err => console.error("Error carregant les dades:", err));
+  } catch (error) {
+    console.error("Error carregant una partida nova:", error);
+    resultActionMessage.textContent = error.message;
+  } finally {
+    botoRecomencar.disabled = false;
+  }
+}
 
 function iniciarTemporitzador() {
   if (sessioPartida.classList.contains("hidden") || !preguntes?.length || intervalTemporitzador !== null) return;
@@ -470,14 +533,116 @@ async function finalitzarPartida() {
     }
 
     estatDeLaPartida.finalitzada = true;
-    partidaDiv.innerHTML = `<h3 class="text-2xl font-semibold tracking-tight text-slate-900">Resultat: ${resultat.respostesCorrectes}/${resultat.totalRespostes}</h3>`;
+    const imatgePregunta = document.getElementById("imatge-container");
+    imatgePregunta.replaceChildren();
+    imatgePregunta.classList.add("hidden");
+    imatgePregunta.classList.remove("flex");
+    const contingutPartida = partidaDiv.parentElement;
+    contingutPartida.classList.remove("lg:grid-cols-[minmax(0,420px)_1fr]");
+    contingutPartida.classList.add("grid-cols-1");
+    renderitzarResultat(resultat);
     botoEnviar.classList.add("hidden");
-    renderitzarMarcador();
+    examControls.classList.add("hidden");
+    questionMarker.classList.add("hidden");
+    resultActions.classList.remove("hidden");
   } catch (error) {
     console.error('Error finalitzant la partida:', error);
     botoEnviar.disabled = false;
     partidaDiv.insertAdjacentHTML('beforeend', `<p role="alert">${error.message}</p>`);
   }
+}
+
+function renderitzarResultat(resultat) {
+  partidaDiv.replaceChildren();
+
+  const resum = document.createElement("section");
+  resum.className = "mb-8 rounded-3xl bg-indigo-950 p-6 text-white shadow-sm sm:p-8";
+
+  const etiqueta = document.createElement("p");
+  etiqueta.className = "text-sm font-semibold uppercase tracking-widest text-indigo-200";
+  etiqueta.textContent = "Partida finalitzada";
+
+  const titol = document.createElement("h2");
+  titol.className = "mt-2 text-2xl font-semibold tracking-tight sm:text-3xl";
+  titol.textContent = "La teva puntuació";
+
+  const puntuacio = document.createElement("p");
+  puntuacio.className = "mt-5 flex items-baseline gap-2";
+  const encerts = document.createElement("span");
+  encerts.className = "text-6xl font-bold tracking-tight tabular-nums";
+  encerts.textContent = String(resultat.respostesCorrectes);
+  const separador = document.createElement("span");
+  separador.className = "text-2xl font-medium text-indigo-200";
+  separador.textContent = `/ ${resultat.totalRespostes}`;
+  puntuacio.append(encerts, separador);
+
+  const percentatge = document.createElement("p");
+  percentatge.className = "mt-1 text-sm text-indigo-200";
+  percentatge.textContent = `${Math.round(resultat.respostesCorrectes / resultat.totalRespostes * 100)}% d'encerts`;
+
+  const resumDetall = document.createElement("div");
+  resumDetall.className = "mt-6 flex flex-wrap gap-2";
+  const encertsBadge = document.createElement("span");
+  encertsBadge.className = "rounded-full bg-emerald-400/15 px-3 py-1.5 text-sm font-medium text-emerald-200";
+  encertsBadge.textContent = `${resultat.respostesCorrectes} correctes`;
+  const falladesBadge = document.createElement("span");
+  falladesBadge.className = "rounded-full bg-rose-400/15 px-3 py-1.5 text-sm font-medium text-rose-200";
+  falladesBadge.textContent = `${resultat.preguntesFallades.length} per revisar`;
+  resumDetall.append(encertsBadge, falladesBadge);
+  resum.append(etiqueta, titol, puntuacio, percentatge, resumDetall, resultActions);
+  partidaDiv.append(resum);
+
+  const revisio = document.createElement("section");
+  const titolRevisio = document.createElement("h2");
+  titolRevisio.className = "mb-4 text-xl font-semibold tracking-tight text-slate-900";
+  titolRevisio.textContent = resultat.preguntesFallades.length
+    ? "Preguntes fallades"
+    : "Perfecte! No has fallat cap pregunta.";
+  revisio.append(titolRevisio);
+
+  if (resultat.preguntesFallades.length) {
+    const llista = document.createElement("div");
+    llista.className = "flex flex-col gap-3";
+
+    resultat.preguntesFallades.forEach((pregunta, index) => {
+      const targeta = document.createElement("article");
+      targeta.className = "rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6";
+
+      const titolPregunta = document.createElement("h3");
+      titolPregunta.className = "mb-3 text-lg font-semibold tracking-tight text-slate-900";
+      titolPregunta.textContent = `${index + 1}. ${pregunta.pregunta}`;
+      targeta.append(titolPregunta);
+
+      if (pregunta.imatge) {
+        const imatge = document.createElement("img");
+        imatge.src = pregunta.imatge;
+        imatge.alt = "Imatge de la pregunta";
+        imatge.className = "mb-4 h-64 w-full rounded-xl border border-slate-200 object-contain sm:h-80";
+        targeta.append(imatge);
+      }
+
+      const opcions = document.createElement("ol");
+      opcions.className = "list-decimal space-y-2 pl-5 text-sm text-slate-600";
+      pregunta.respostes.forEach((resposta, respostaIndex) => {
+        const opcio = document.createElement("li");
+        opcio.textContent = resposta;
+        if (respostaIndex === pregunta.respostaCorrecta) {
+          opcio.className = "font-semibold text-emerald-700";
+          opcio.append(document.createTextNode(" (correcta)"));
+        } else if (respostaIndex === pregunta.respostaUsuari) {
+          opcio.className = "font-medium text-rose-700";
+          opcio.append(document.createTextNode(" (la teva resposta)"));
+        }
+        opcions.append(opcio);
+      });
+      targeta.append(opcions);
+      llista.append(targeta);
+    });
+
+    revisio.append(llista);
+  }
+
+  partidaDiv.append(revisio);
 }
 
 function renderitzarMarcador() {
